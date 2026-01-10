@@ -7,11 +7,10 @@ import {
   Select,
   MenuItem,
   FormControl,
-  TextField,
   Checkbox,
 } from '@mui/material';
 import { useModel } from '../../../../model/Context';
-
+import TextField from '../../../../components/TextField/TextField';
 interface DiagramsProps {
   onApply: (option: string | null, scale: number, members: number[]) => void;
 }
@@ -38,7 +37,7 @@ const Diagrams = () => {
     <>
       <Box sx={{ mt: 2, mb: 2, width:'300px ' }}>
         <Typography
-          variant="subtitle2" 
+          variant="subtitle2"
         >
           Select members
         </Typography>
@@ -262,40 +261,16 @@ const Diagrams = () => {
           </Box>
         </Box>
       </Box>
-      <Box sx={{ mt: 3, mb: 2, display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: 1 }}>
+      <Box sx={{ mt: 3, mb: 2, display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: 1, ml: 'auto', width: '100px' }}>
         <Typography variant="subtitle2">
           Scale
         </Typography>
         <TextField
+          name='scale'
+          placeholder={'scale'}
           value={scale}
-          onChange={(e) => {
+          onChange={(e: any) => {
             setScale(e.target.value)
-          }}
-          size="small"
-          sx={{
-            width: '70px',
-            '& .MuiOutlinedInput-root': {
-              fontSize: '0.875rem',
-              fontFamily: '"Inter", "SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
-              backgroundColor: '#ffffff',
-              '& fieldset': {
-                borderColor: '#b0b0b0',
-              },
-              '&:hover fieldset': {
-                borderColor: '#999',
-              },
-              '&.Mui-focused fieldset': {
-                borderColor: '#555',
-              },
-            },
-            '& .MuiInputBase-input': {
-              color: '#333',
-              py: 1,
-              '&::placeholder': {
-                color: '#999',
-                opacity: 1,
-              },
-            },
           }}
         />
       </Box>

@@ -101,7 +101,7 @@ const Results = ({open, onClose}) => {
       title="Results"
     >
       <Box sx={{ display: 'flex', flexDirection: 'column', width: 'auto', maxWidth: 'calc(100vw - 40px)' }}>
-        <Box sx={{ mb: 2, width: '300px' }}>
+        <Box sx={{ mb: 2, width: '300px' , ml:2}}>
           <Select
             list={viewOptions}
             value={selectedType}
@@ -116,7 +116,7 @@ const Results = ({open, onClose}) => {
           </Box>
         )}
         {selectedType === 'Diagrams' && (
-          <Box sx={{ width: '100%', p: 2, overflowY: 'auto', maxHeight: '500px' }}>
+          <Box sx={{ width: '100%', px: 2, pb: 2, overflowY: 'auto', maxHeight: '500px' }}>
             <Diagrams />
           </Box>
         )}

@@ -24,7 +24,6 @@ const GridHelper = () => {
 				<Typography
 					sx={{
 						fontSize: '0.75rem',
-						color: '#555',
 						mb: 0.5,
 						fontWeight: 500,
 						fontFamily: '"Inter", "SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
@@ -38,30 +37,6 @@ const GridHelper = () => {
 					name={'spacing'}
 					placeholder="Spacing"
 					fullWidth
-					sx={{
-						'& .MuiOutlinedInput-root': {
-							backgroundColor: '#ffffff',
-							height: '32px',
-							'& fieldset': {
-								borderColor: '#b0b0b0',
-							},
-							'&:hover fieldset': {
-								borderColor: '#999',
-							},
-							'&.Mui-focused fieldset': {
-								borderColor: '#555',
-							},
-						},
-						'& .MuiInputBase-input': {
-							color: '#333',
-							textAlign: 'center',
-							padding: '6px 12px',
-							fontSize: '0.875rem',
-							'&::placeholder': {
-								color: '#999',
-							},
-						},
-					}}
 				/>
 			</Box>
 
@@ -83,30 +58,6 @@ const GridHelper = () => {
 					name={'size'}
 					placeholder="Size"
 					fullWidth
-					sx={{
-						'& .MuiOutlinedInput-root': {
-							backgroundColor: '#ffffff',
-							height: '32px',
-							'& fieldset': {
-								borderColor: '#b0b0b0',
-							},
-							'&:hover fieldset': {
-								borderColor: '#999',
-							},
-							'&.Mui-focused fieldset': {
-								borderColor: '#555',
-							},
-						},
-						'& .MuiInputBase-input': {
-							color: '#333',
-							textAlign: 'center',
-							padding: '6px 12px',
-							fontSize: '0.875rem',
-							'&::placeholder': {
-								color: '#999',
-							},
-						},
-					}}
 				/>
 			</Box>
 		</>

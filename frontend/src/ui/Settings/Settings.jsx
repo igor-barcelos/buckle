@@ -1,36 +1,18 @@
 import React, { memo, useState } from 'react';
 import {
   Box,
-  IconButton,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  Paper,
   Typography,
   FormControlLabel,
   Grid,
   Select,
   MenuItem,
-  FormControl
+  FormControl,
+  Checkbox
 } from '@mui/material';
-import { Close } from '@mui/icons-material';
-import Checkbox from '@mui/material/Checkbox';
-import Draggable from 'react-draggable';
 import { useModel } from '../../model/Context';
+import Dialog from '../../components/Dialog/Dialog';
 import GridHelper from './GridHelper/GridHelper';
 import { observer } from 'mobx-react-lite';
-
-function DraggablePaper(props) {
-  return (
-    <Draggable
-      handle="#draggable-dialog-title"
-      cancel={'[class*="MuiDialogContent-root"]'}
-      defaultPosition={{ x: 0, y: 0 }}
-    >
-      <Paper {...props} />
-    </Draggable>
-  );
-}
 
 const Settings = ({open, onClose}) => {
   const model = useModel()
@@ -98,53 +80,14 @@ const Settings = ({open, onClose}) => {
       onClose={onClose}
       maxWidth="xs"
       fullWidth={false}
+      draggable
       hideBackdrop
       disableEnforceFocus
       disableAutoFocus
-      PaperComponent={DraggablePaper}
-      PaperProps={{
-        sx: {
-          backgroundColor: '#e8e8e8',
-          borderRadius: '8px',
-          border: '2px solid #b0b0b0',
-          boxShadow: '0 4px 8px rgba(0, 0, 0, 0.15)',
-          width: '250px',
-          pointerEvents: 'auto',
-          position: 'fixed',
-          top: '126px',
-          left: '300px',
-          margin: 0,
-        },
-      }}
-      sx={{
-        pointerEvents: 'none',
-        '& .MuiDialog-container': {
-          alignItems: 'flex-start',
-          justifyContent: 'flex-start',
-          padding: 0,
-        },
-        '& .MuiPaper-root': {
-          pointerEvents: 'auto',
-          position: 'fixed !important',
-          top: '135px !important',
-          left: '300px !important',
-          margin: 0,
-        },
-      }}
+      disableRestoreFocus
+      title='Settings'
     >
-      <DialogTitle
-        id="draggable-dialog-title"
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          backgroundColor: '#e8e8e8',
-          borderBottom: '2px solid #b0b0b0',
-          py: 1,
-          px: 2,
-          cursor: 'move',
-        }}
-      >
+      <Box sx={{ mb: 2, width: '250px' }}>
         <FormControl size="small" sx={{ width: '100%' }}>
           <Select
             value={selectedType}
@@ -154,6 +97,7 @@ const Settings = ({open, onClose}) => {
               backgroundColor: '#ffffff',
               height: '32px',
               fontSize: '0.875rem',
+              color: '#333',
               '& .MuiOutlinedInput-notchedOutline': {
                 borderColor: '#b0b0b0',
               },
@@ -166,11 +110,6 @@ const Settings = ({open, onClose}) => {
               '& .MuiSelect-select': {
                 py: 0,
                 px: '12px',
-                fontSize: '0.875rem',
-                color: '#333',
-                height: '32px',
-                display: 'flex',
-                alignItems: 'center',
               },
             }}
             MenuProps={{
@@ -194,124 +133,50 @@ const Settings = ({open, onClose}) => {
           >
             <MenuItem value="Visibility">Visibility</MenuItem>
             <MenuItem value="Grid">Grid</MenuItem>
-            {/* <MenuItem value="Snapping">Snapping</MenuItem> */}
           </Select>
         </FormControl>
-        <IconButton
-          onClick={onClose}
-          size="small"
-          sx={{
-            color: '#555',
-            '&:hover': {
-              color: '#000',
-              backgroundColor: 'rgba(0, 0, 0, 0.08)',
-            },
-          }}
-        >
-          <Close fontSize="small" />
-        </IconButton>
-      </DialogTitle>
-      <DialogContent sx={{ p: 2, backgroundColor: '#e8e8e8', overflow: 'hidden' }}>
-         {
-          selectedType === 'Visibility' && 
-            (
-              Object.keys(visibilityOptions).map((key) => {
-                const option = visibilityOptions[key]
-                return(
-                  <Grid container alignItems='center' justifyContent='space-between' key={key}> 
-                    <Grid item xs={6}>
-                      <Typography
+      </Box>
+
+      {selectedType === 'Visibility' && (
+        <Box>
+          {Object.keys(visibilityOptions).map((key) => {
+            const option = visibilityOptions[key];
+            return (
+              <Grid container alignItems="center" justifyContent="space-between" key={key}>
+                <Grid item xs={6}>
+                  <Typography sx={{ fontSize: '0.75rem', fontWeight: 500 }}>
+                    {option.label}
+                  </Typography>
+                </Grid>
+                <Grid item xs={6} sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={model?.visibility[key] || false}
+                        onChange={(e) => handleChangeVisibility(e)}
+                        size="small"
+                        name={option.value}
                         sx={{
-                          fontSize: '0.75rem',
-                          color: '#555',
-                          mb: 0.5,
-                          fontWeight: 500,
-                          fontFamily: '"Inter", "SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+                          color: '#e0e0e0',
+                          '&.Mui-checked': {
+                            color: '#4a90e2',
+                          },
                         }}
-                      >
-                        {option.label}
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={6} sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-                      <FormControlLabel
-                        control={
-                          <Checkbox
-                            checked={model?.visibility[key] || false}
-                            onChange={(e) => handleChangeVisibility(e)}
-                            size="small"
-                            name={option.value}
-                            sx={{
-                              color: '#b0b0b0',
-                              '&.Mui-checked': {
-                                color: '#555',
-                              },
-                            }}
-                          />
-                        }
-                        label=""
-                        sx={{ margin: 0 }}
                       />
-                    </Grid>
-                  </Grid>
-                )
-              })
-            )
-         }
-         {
-          selectedType === 'Snapping' && 
-            (
-              Object.keys(snapOptions).map((key) => {
-                const option = snapOptions[key]
-                return(
-                  <Grid container alignItems='center' justifyContent='space-between' key={key}> 
-                    <Grid item xs={6}>
-                      <Typography
-                        sx={{
-                          fontSize: '0.75rem',
-                          color: '#555',
-                          mb: 0.5,
-                          fontWeight: 500,
-                          fontFamily: '"Inter", "SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
-                        }}
-                      >
-                        {option.label}
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={6} sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-                      <FormControlLabel
-                        key={option.value}
-                        control={
-                          <Checkbox
-                            checked={model?.snapper[key] || false}
-                            onChange={(e) => handleChangeSnap(e)}
-                            size="small"
-                            name={option.value}
-                            sx={{
-                              color: '#b0b0b0',
-                              '&.Mui-checked': {
-                                color: '#555',
-                              },
-                            }}
-                          />
-                        }
-                        label=""
-                        sx={{ margin: 0 }}
-                      />
-                    </Grid>
-                  </Grid>
-                )
-              })
-            )
-         }
-         {
-          selectedType === 'Grid' && 
-          (
-            <GridHelper />
-          )
-         }
-      </DialogContent>
+                    }
+                    label=""
+                    sx={{ margin: 0 }}
+                  />
+                </Grid>
+              </Grid>
+            );
+          })}
+        </Box>
+      )}
+
+      {selectedType === 'Grid' && <GridHelper />}
     </Dialog>
-  )
+  );
 }
 
 export default observer(Settings)

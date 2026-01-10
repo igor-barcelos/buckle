@@ -1,0 +1,7 @@
+{
+  "mcpServers": {
+    "basic-mcp-server": {
+      "url": "http://localhost:3000/mcp"
+    }
+  }
+}

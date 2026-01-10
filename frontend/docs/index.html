@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Buckle - Structural Analysis</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #000000;
+      color: #ffffff;
+      line-height: 1.5;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 60px 40px;
+    }
+
+    header {
+      margin-bottom: 80px;
+    }
+
+    h1 {
+      font-size: 4rem;
+      font-weight: 300;
+      letter-spacing: -0.02em;
+      margin-bottom: 4px;
+      color: #ffffff;
+    }
+
+    .examples {
+      list-style: none;
+    }
+
+    .example {
+      padding: 20px 0;
+      border-top: 1px solid #333333;
+    }
+
+    .example:first-child {
+      border-top: none;
+    }
+
+    .example-link {
+      color: #ffffff;
+      text-decoration: none;
+      font-size: 1.125rem;
+      font-weight: 400;
+      transition: opacity 0.2s;
+    }
+
+    .example-link:hover {
+      opacity: 0.7;
+    }
+
+    .example-description {
+      font-size: 0.875rem;
+      color: #999999;
+      margin-top: 8px;
+      line-height: 1.6;
+      max-width: 800px;
+    }
+
+    .video-container {
+      margin-top: 60px;
+      margin-bottom: 60px;
+    }
+
+    .video-wrapper {
+      position: relative;
+      padding-bottom: 33.75%; /* 16:9 aspect ratio at 60% width */
+      height: 0;
+      overflow: hidden;
+      max-width: 60%;
+      background: #000;
+      border-radius: 8px;
+    }
+
+    .video-wrapper iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    .video-note {
+      font-size: 0.75rem;
+      color: #666666;
+      margin-top: 12px;
+      font-style: italic;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        padding: 40px 24px;
+      }
+
+      h1 {
+        font-size: 3rem;
+      }
+
+      header {
+        margin-bottom: 60px;
+      }
+
+      .video-container {
+        margin-bottom: 40px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Buckle Docs</h1>
+    </header>
+
+    <ul class="examples">
+      <li class="example">
+        <div>
+          <a href="#" class="example-link">Example 01 - Single Story Steel Frame: Static Analysis</a>
+          <div class="example-description">
+            A single story-steel frame with a width and height of 4.0 m. The structure uses IPE 400 columns and IPE 360 beams with elastic material properties (E = 210 GPa). A linear load of 5 kN/m is applied to the beam. The base is fixed.
+          </div>
+        </div>
+      </li>
+    </ul>
+
+    <div class="video-container">
+      <div class="video-wrapper">
+        <iframe src="https://www.youtube.com/embed/uvO_UpGN12s" 
+                allowfullscreen
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture">
+        </iframe>
+      </div>
+      <p class="video-note">Note: Video is played at 2x speed</p>
+    </div>
+  </div>
+</body>
+</html>

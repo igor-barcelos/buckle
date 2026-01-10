@@ -1,0 +1,206 @@
+{
+  "nodes": [
+    {
+      "id": 822454183,
+      "x": 0,
+      "y": 0,
+      "z": 0,
+      "name": "Node 1"
+    },
+    {
+      "id": 1410995714,
+      "x": 3,
+      "y": 0,
+      "z": 0,
+      "name": "Node 2"
+    },
+    {
+      "id": 321912581,
+      "x": 6,
+      "y": 0,
+      "z": 0,
+      "name": "Node 3"
+    },
+    {
+      "id": 1547954279,
+      "x": 9,
+      "y": 0,
+      "z": 0,
+      "name": "Node 4"
+    },
+    {
+      "id": 2058853687,
+      "x": 12,
+      "y": 0,
+      "z": 0,
+      "name": "Node 5"
+    }
+  ],
+  "members": [
+    {
+      "id": 173668323,
+      "label": "Member 1",
+      "nodei": {
+        "id": 822454183,
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "nodej": {
+        "id": 1410995714,
+        "x": 3,
+        "y": 0,
+        "z": 0
+      },
+      "section": 2,
+      "vecxz": [
+        0,
+        0,
+        1
+      ],
+      "release": "pinned-fixed"
+    },
+    {
+      "id": 1062764548,
+      "label": "Member 2",
+      "nodei": {
+        "id": 1410995714,
+        "x": 3,
+        "y": 0,
+        "z": 0
+      },
+      "nodej": {
+        "id": 321912581,
+        "x": 6,
+        "y": 0,
+        "z": 0
+      },
+      "section": 2,
+      "vecxz": [
+        0,
+        0,
+        1
+      ]
+    },
+    {
+      "id": 1500883347,
+      "label": "Member 3",
+      "nodei": {
+        "id": 321912581,
+        "x": 6,
+        "y": 0,
+        "z": 0
+      },
+      "nodej": {
+        "id": 1547954279,
+        "x": 9,
+        "y": 0,
+        "z": 0
+      },
+      "section": 2,
+      "vecxz": [
+        0,
+        0,
+        1
+      ]
+    },
+    {
+      "id": 215293349,
+      "label": "Member 4",
+      "nodei": {
+        "id": 1547954279,
+        "x": 9,
+        "y": 0,
+        "z": 0
+      },
+      "nodej": {
+        "id": 2058853687,
+        "x": 12,
+        "y": 0,
+        "z": 0
+      },
+      "section": 2,
+      "vecxz": [
+        0,
+        0,
+        1
+      ],
+      "release": "fixed-pinned"
+    }
+  ],
+  "materials": [
+    {
+      "id": 2,
+      "name": "MAT",
+      "E": 2.1E11,
+      "nu": 0.3
+    }
+  ],
+  "sections": [
+    {
+      "id": 2,
+      "name": "SEC",
+      "type": "Rectangular",
+      "width": 295,
+      "height": 295,
+      "material": {
+        "id": 2,
+        "name": "MAT",
+        "E": 2.1E11,
+        "nu": 0.3
+      }
+    }
+  ],
+  "loads": [
+    {
+      "id": 335896448,
+      "type": "nodal",
+      "targets": [
+        1410995714,
+        1547954279
+      ],
+      "name": "Load 1",
+      "value": {
+        "x": 0,
+        "y": -42,
+        "z": 0
+      }
+    }
+  ],
+  "boundary_conditions": [
+    {
+      "id": 1220194784,
+      "type": "fixed",
+      "targets": [
+        822454183,
+        2058853687
+      ],
+      "name": "Support 1",
+      "dx": 1,
+      "dy": 1,
+      "dz": 1,
+      "rx": 1,
+      "ry": 1,
+      "rz": 1
+    },
+    {
+      "id": 1220194,
+      "type": "elastic",
+      "targets": [
+        321912581
+      ],
+      "name": "Elastic",
+      "dx": 0,
+      "dy": 0,
+      "dz": 2100000,
+      "rx": 0,
+      "ry": 0,
+      "rz": 0
+    }
+  ],
+  "metadata": {
+    "id": "SSLL03",
+    "label": "SSLL03 - Beam with elastic support ",
+    "description": "Simple beam under bending with elastic support at the center."
+  }
+}

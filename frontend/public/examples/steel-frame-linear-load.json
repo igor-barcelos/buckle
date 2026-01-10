@@ -1,0 +1,204 @@
+{
+  "nodes": [
+    {
+      "id": 1,
+      "x": -3.5,
+      "y": 0.0,
+      "z": 0.0,
+      "name": "Left Base"
+    },
+    {
+      "id": 2,
+      "x": 3.5,
+      "y": 0.0,
+      "z": 0.0,
+      "name": "Right Base"
+    },
+    {
+      "id": 3,
+      "x": -3.5,
+      "y": 5.0,
+      "z": 0.0,
+      "name": "Left Column Top"
+    },
+    {
+      "id": 4,
+      "x": 3.5,
+      "y": 5.0,
+      "z": 0.0,
+      "name": "Right Column Top"
+    },
+    {
+      "id": 5,
+      "x": 0.0,
+      "y": 5.0,
+      "z": 0.0,
+      "name": "Apex"
+    }
+  ],
+  "members": [
+    {
+      "id": 10,
+      "label": "Left Column",
+      "nodei": {
+        "id": 1,
+        "x": -3.5,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "nodej": {
+        "id": 3,
+        "x": -3.5,
+        "y": 5.0,
+        "z": 0.0
+      },
+      "section": 2,
+      "vecxz": [
+        1,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 11,
+      "label": "Right Column",
+      "nodei": {
+        "id": 2,
+        "x": 3.5,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "nodej": {
+        "id": 4,
+        "x": 3.5,
+        "y": 5.0,
+        "z": 0.0
+      },
+      "section": 2,
+      "vecxz": [
+        1,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 12,
+      "label": "Left Rafter (0\u00b0)",
+      "nodei": {
+        "id": 3,
+        "x": -3.5,
+        "y": 5.0,
+        "z": 0.0
+      },
+      "nodej": {
+        "id": 5,
+        "x": 0.0,
+        "y": 5.0,
+        "z": 0.0
+      },
+      "section": 1,
+      "vecxz": [
+        0,
+        0,
+        1
+      ]
+    },
+    {
+      "id": 13,
+      "label": "Right Rafter (0\u00b0)",
+      "nodei": {
+        "id": 4,
+        "x": 3.5,
+        "y": 5.0,
+        "z": 0.0
+      },
+      "nodej": {
+        "id": 5,
+        "x": 0.0,
+        "y": 5.0,
+        "z": 0.0
+      },
+      "section": 1,
+      "vecxz": [
+        0,
+        0,
+        1
+      ]
+    }
+  ],
+  "materials": [
+    {
+      "id": 1,
+      "name": "Steel",
+      "E": 210000000000,
+      "nu": 0.3
+    }
+  ],
+  "sections": [
+    {
+      "id": 1,
+      "name": "IPE330", "depth": 330, "width": 160, "tw": 7.5,  "tf": 11.5, "r": 18 ,
+      "type": "I",
+      "material": {
+        "id": 1,
+        "name": "Steel",
+        "E": 210000000000,
+        "nu": 0.3
+      }
+    },
+    {
+      "id": 2,
+      "name": "IPE450", "depth": 450, "width": 190, "tw": 9.4,  "tf": 14.6, "r": 21,
+      "type": "I",
+      "material": {
+        "id": 1,
+        "name": "Steel",
+        "E": 210000000000,
+        "nu": 0.3
+      }
+    }
+  ],
+  "loads": [
+    {
+      "id": 201,
+      "type": "linear",
+      "targets": [
+        10
+      ],
+      "name": "Vertical load on apex node",
+      "value": {
+        "x": 5.0,
+        "y": 0,
+        "z": 0.0
+      },
+      "direction": {
+        "x": 1.0,
+        "y": 0.0,
+        "z": 0.0
+      }
+    }
+  ],
+  "boundary_conditions": [
+    {
+      "id": 100,
+      "type": "fixed",
+      "targets": [
+        1,
+        2
+      ],
+      "name": "Fixed Bases",
+      "dx": 1,
+      "dy": 1,
+      "dz": 1,
+      "rx": 1,
+      "ry": 1,
+      "rz": 1
+    }
+  ],
+  "metadata": {
+    "modelName": "V Frame with Columns (0\u00b0 Rafters)",
+    "version": "1.1",
+    "exportDate": "2025-08-30T07:41:05.233121Z",
+    "notes": "Apex y = 5.0 m (0\u00b0 rafters); span = 7 m; column height = 5 m. | Added horizontal 5 kN/m load on left column."
+  }
+}

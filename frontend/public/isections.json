@@ -1,0 +1,20 @@
+[
+  { "name": "IPE80",  "depth": 80,  "width": 46,  "tw": 3.8,  "tf": 5.2,  "r": 5 },
+  { "name": "IPE100", "depth": 100, "width": 55,  "tw": 4.1,  "tf": 5.7,  "r": 7 },
+  { "name": "IPE120", "depth": 120, "width": 64,  "tw": 4.4,  "tf": 6.3,  "r": 7 },
+  { "name": "IPE140", "depth": 140, "width": 73,  "tw": 4.7,  "tf": 6.9,  "r": 7 },
+  { "name": "IPE160", "depth": 160, "width": 82,  "tw": 5.0,  "tf": 7.4,  "r": 9 },
+  { "name": "IPE180", "depth": 180, "width": 91,  "tw": 5.3,  "tf": 8.0,  "r": 9 },
+  { "name": "IPE200", "depth": 200, "width": 100, "tw": 5.6,  "tf": 8.5,  "r": 12 },
+  { "name": "IPE220", "depth": 220, "width": 110, "tw": 5.9,  "tf": 9.2,  "r": 12 },
+  { "name": "IPE240", "depth": 240, "width": 120, "tw": 6.2,  "tf": 9.8,  "r": 15 },
+  { "name": "IPE270", "depth": 270, "width": 135, "tw": 6.6,  "tf": 10.2, "r": 15 },
+  { "name": "IPE300", "depth": 300, "width": 150, "tw": 7.1,  "tf": 10.7, "r": 15 },
+  { "name": "IPE330", "depth": 330, "width": 160, "tw": 7.5,  "tf": 11.5, "r": 18 },
+  { "name": "IPE360", "depth": 360, "width": 170, "tw": 8.0,  "tf": 12.7, "r": 18 },
+  { "name": "IPE400", "depth": 400, "width": 180, "tw": 8.6,  "tf": 13.5, "r": 21 },
+  { "name": "IPE450", "depth": 450, "width": 190, "tw": 9.4,  "tf": 14.6, "r": 21 },
+  { "name": "IPE500", "depth": 500, "width": 200, "tw": 10.2, "tf": 16.0, "r": 21 },
+  { "name": "IPE550", "depth": 550, "width": 210, "tw": 11.1, "tf": 17.2, "r": 24 },
+  { "name": "IPE600", "depth": 600, "width": 220, "tw": 12.0, "tf": 19.0, "r": 24 }
+]

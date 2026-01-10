@@ -1,0 +1,195 @@
+{
+  "nodes": [
+    {
+      "id": 1,
+      "x": -3.5,
+      "y": 0.0,
+      "z": 0.0,
+      "name": "Left Base"
+    },
+    {
+      "id": 2,
+      "x": 3.5,
+      "y": 0.0,
+      "z": 0.0,
+      "name": "Right Base"
+    },
+    {
+      "id": 3,
+      "x": -3.5,
+      "y": 5.0,
+      "z": 0.0,
+      "name": "Left Column Top"
+    },
+    {
+      "id": 4,
+      "x": 3.5,
+      "y": 5.0,
+      "z": 0.0,
+      "name": "Right Column Top"
+    },
+    {
+      "id": 5,
+      "x": 0.0,
+      "y": 5.0,
+      "z": 0.0,
+      "name": "Apex"
+    }
+  ],
+  "members": [
+    {
+      "id": 10,
+      "label": "Left Column",
+      "nodei": {
+        "id": 1,
+        "x": -3.5,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "nodej": {
+        "id": 3,
+        "x": -3.5,
+        "y": 5.0,
+        "z": 0.0
+      },
+      "section": 1,
+      "vecxz": [
+        1,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 11,
+      "label": "Right Column",
+      "nodei": {
+        "id": 2,
+        "x": 3.5,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "nodej": {
+        "id": 4,
+        "x": 3.5,
+        "y": 5.0,
+        "z": 0.0
+      },
+      "section": 1,
+      "vecxz": [
+        1,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 12,
+      "label": "Left Rafter (0°)",
+      "nodei": {
+        "id": 3,
+        "x": -3.5,
+        "y": 5.0,
+        "z": 0.0
+      },
+      "nodej": {
+        "id": 5,
+        "x": 0.0,
+        "y": 5.0,
+        "z": 0.0
+      },
+      "section": 1,
+      "vecxz": [
+        0,
+        0,
+        1
+      ]
+    },
+    {
+      "id": 13,
+      "label": "Right Rafter (0°)",
+      "nodei": {
+        "id": 4,
+        "x": 3.5,
+        "y": 5.0,
+        "z": 0.0
+      },
+      "nodej": {
+        "id": 5,
+        "x": 0.0,
+        "y": 5.0,
+        "z": 0.0
+      },
+      "section": 1,
+      "vecxz": [
+        0,
+        0,
+        1
+      ]
+    }
+  ],
+  "materials": [
+    {
+      "id": 1,
+      "name": "Concrete C25/30",
+      "E": 30000000000,
+      "nu": 0.2
+    }
+  ],
+  "sections": [
+    {
+      "id": 1,
+      "name": "20x50cm",
+      "width": 200,
+      "height": 500,
+      "type": "Rectangular",
+      "material": {
+        "id": 1,
+        "name": "Concrete C25/30",
+        "E": 30000000000,
+        "nu": 0.2
+      }
+    }
+  ],
+  "loads": [
+    {
+      "id": 201,
+      "type": "nodal",
+      "targets": [
+        5
+      ],
+      "name": "Vertical load on apex node",
+      "value": {
+        "x": 0.0,
+        "y": -10.0,
+        "z": 0.0
+      },
+      "direction": {
+        "x": 0.0,
+        "y": 1.0,
+        "z": 0.0
+      }
+    }
+  ],
+  "boundary_conditions": [
+    {
+      "id": 100,
+      "type": "fixed",
+      "targets": [
+        1,
+        2
+      ],
+      "name": "Fixed Bases",
+      "dx": 1,
+      "dy": 1,
+      "dz": 1,
+      "rx": 1,
+      "ry": 1,
+      "rz": 1
+    }
+  ],
+  "metadata": {
+    "modelName": "Concrete Frame with Columns (0° Rafters)",
+    "version": "1.1",
+    "exportDate": "2025-01-27T12:00:00.000Z",
+    "notes": "Concrete frame: 20x50cm elements, apex y = 5.0 m (0° rafters); span = 7 m; column height = 5 m. | 10 kN vertical point load at apex."
+  }
+}

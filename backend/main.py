@@ -13,13 +13,13 @@ from datetime import datetime, timezone
 from websockets.exceptions import ConnectionClosed
 
 # Importer le routeur depuis le fichier api.py
-from api import router as api_router
 from routes.auth import router as auth_router
 from auth.dependencies import get_current_user
 from models.user import User
 from mcp_tools import mcp_server
 import mcp_tools
 from opensees import run_analysis
+
 class ConnectionManager:
     def __init__(self):
         self.active_connections: list[WebSocket] = []
@@ -71,7 +71,6 @@ ENVIRONMENT = os.environ.get("ENVIRONMENT", "development")
 build_dir = os.path.join(os.path.dirname(__file__), '../frontend', 'build')
 
 # Inclure les routeurs
-app.include_router(api_router)
 app.include_router(auth_router)
 
 # En mode développement, rediriger les requêtes frontend vers le serveur React

@@ -180,7 +180,7 @@ async def readiness_check():
 
 
 @app.get("/benchmarks")
-async def get_benchmarks(current_user: User = Depends(get_current_user)):
+async def get_benchmarks():
   benchmarks_dir = pathlib.Path(__file__).parent / "tests" / "benchmarks"
   benchmarks = []
   for json_file in benchmarks_dir.glob("*.json"):
@@ -198,7 +198,7 @@ async def get_benchmarks(current_user: User = Depends(get_current_user)):
   return benchmarks
 
 @app.get("/benchmark/{id}")
-async def get_benchmark(id: str, current_user: User = Depends(get_current_user)):
+async def get_benchmark(id: str):
   benchmarks_dir = pathlib.Path(__file__).parent / "tests" / "benchmarks"
   
   for json_file in benchmarks_dir.glob("*.json"):
@@ -213,7 +213,7 @@ async def get_benchmark(id: str, current_user: User = Depends(get_current_user))
   raise HTTPException(status_code=404, detail=f"Benchmark with id '{id}' not found")
 
 @app.post("/analysis")
-async def get_analysis(model : dict, current_user: User = Depends(get_current_user)):
+async def get_analysis(model : dict):
   try :
     output = run_analysis(model)
     return {

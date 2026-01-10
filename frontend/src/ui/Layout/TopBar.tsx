@@ -577,7 +577,7 @@ const TopBar = observer(({ onMenuClick }: TopBarProps) => {
             <RibbonButton
               title="Docs"
               label="Docs"
-              onClick={() => open('docs')}
+              onClick={() => window.open('https://github.com/igor-barcelos/buckle', '_blank')}
               iconImage={{ src: '/github.png', alt: 'Docs', size: 18 }}
             />
           </Box>

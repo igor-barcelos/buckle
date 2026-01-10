@@ -133,7 +133,7 @@ export class Model {
     this.layer = 0
     this.visibility = new Visibility(this)
     // buildModelOnjson(this, '/examples/ipe330-cantilever-beam.json')
-    buildModelOnjson(this, '/examples/concrete-frame-nodal-load.json')
+    // buildModelOnjson(this, '/examples/concrete-frame-nodal-load.json')
     makeAutoObservable(this)
     
   }

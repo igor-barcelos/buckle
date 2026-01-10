@@ -4,7 +4,7 @@ Finite element analysis web application for 3D structural frame modeling and ana
 
 ## Tutorial
 
-Learn how to use Buckle :
+Learn how to use Buckle:
 
 - [01 - Frame Analysis](https://youtu.be/WKQdDsRB_pE)
 

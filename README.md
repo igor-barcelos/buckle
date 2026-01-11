@@ -1,6 +1,8 @@
 # Buckle
 
-Finite element analysis web application for 3D structural frame modeling and analysis.
+**Live App**: https://buckle-app.netlify.app/
+
+Finite element analysis web application for 3D structural frame modeling.
 
 ## Tutorial
 

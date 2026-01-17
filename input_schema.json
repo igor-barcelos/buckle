@@ -1,0 +1,392 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Structural Analysis Input Schema",
+  "description": "Schema for the /analysis endpoint that accepts a structural model and performs analysis. Units: Coordinates in meters (m), Section dimensions in centimeters (cm), Young's modulus in MPa, Loads in kN",
+  "type": "object",
+  "properties": {
+    "nodes": {
+      "type": "array",
+      "description": "List of structural nodes in 3D space (coordinates in meters)",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Unique node identifier"
+          },
+          "x": {
+            "type": "number",
+            "description": "X coordinate (meters)"
+          },
+          "y": {
+            "type": "number",
+            "description": "Y coordinate (meters)"
+          },
+          "z": {
+            "type": "number",
+            "description": "Z coordinate (meters)"
+          }
+        },
+        "required": ["id", "x", "y", "z"]
+      }
+    },
+    "members": {
+      "type": "array",
+      "description": "List of structural members (beams, columns, braces, etc.)",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Unique member identifier"
+          },
+          "name": {
+            "type": "string",
+            "description": "Member name or label"
+          },
+          "nodei": {
+            "type": "object",
+            "description": "Start node of the member",
+            "properties": {
+              "id": {
+                "type": "integer",
+                "description": "Node ID"
+              },
+              "x": {
+                "type": "number",
+                "description": "X coordinate"
+              },
+              "y": {
+                "type": "number",
+                "description": "Y coordinate"
+              },
+              "z": {
+                "type": "number",
+                "description": "Z coordinate"
+              }
+            },
+            "required": ["id", "x", "y", "z"]
+          },
+          "nodej": {
+            "type": "object",
+            "description": "End node of the member",
+            "properties": {
+              "id": {
+                "type": "integer",
+                "description": "Node ID"
+              },
+              "x": {
+                "type": "number",
+                "description": "X coordinate"
+              },
+              "y": {
+                "type": "number",
+                "description": "Y coordinate"
+              },
+              "z": {
+                "type": "number",
+                "description": "Z coordinate"
+              }
+            },
+            "required": ["id", "x", "y", "z"]
+          },
+          "section": {
+            "type": "integer",
+            "description": "Section ID (reference to the sections array)"
+          },
+          "vecxz": {
+            "type": "array",
+            "description": "Local x-z plane vector (3D vector). If not provided, it will be automatically calculated based on member orientation: [0,0,1] for horizontal members, [1,0,0] for vertical members",
+            "items": {
+              "type": "number"
+            },
+            "minItems": 3,
+            "maxItems": 3
+          },
+          "release": {
+            "type": "object",
+            "description": "Member releases (partial fixity at ends)",
+            "additionalProperties": true
+          }
+        },
+        "required": ["id", "nodei", "nodej"]
+      }
+    },
+    "sections": {
+      "type": "array",
+      "description": "List of cross-sections. Each section must have a 'type' and corresponding dimensions in centimeters (cm). Types: 'I' (I-section with depth, width, tw, tf), 'Rectangular' (width, height), 'Circular' (diameter), 'HollowCircular' (diameter, thickness)",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Unique section identifier"
+          },
+          "name": {
+            "type": "string",
+            "description": "Section name or description"
+          },
+          "type": {
+            "type": "string",
+            "enum": ["I", "Rectangular", "Circular", "HollowCircular"],
+            "description": "Section type: 'I' for I-sections, 'Rectangular', 'Circular', or 'HollowCircular'"
+          },
+          "material": {
+            "type": "object",
+            "description": "Material properties for this section",
+            "properties": {
+              "E": {
+                "type": "number",
+                "description": "Young's modulus (MPa or GPa)"
+              },
+              "nu": {
+                "type": "number",
+                "description": "Poisson's ratio (typically 0.3 for steel, 0.2 for concrete)"
+              }
+            },
+            "required": ["E", "nu"]
+          },
+          "depth": {
+            "type": "number",
+            "description": "Section depth/height (cm) - for I, Rectangular sections"
+          },
+          "width": {
+            "type": "number",
+            "description": "Section width (cm) - for I, Rectangular sections"
+          },
+          "tw": {
+            "type": "number",
+            "description": "Web thickness (cm) - for I-sections"
+          },
+          "tf": {
+            "type": "number",
+            "description": "Flange thickness (cm) - for I-sections"
+          },
+          "diameter": {
+            "type": "number",
+            "description": "Diameter (cm) - for Circular or HollowCircular sections"
+          },
+          "thickness": {
+            "type": "number",
+            "description": "Wall thickness (cm) - for HollowCircular sections"
+          }
+        },
+        "required": ["id", "type", "material"],
+        "additionalProperties": false
+      }
+    },
+    "materials": {
+      "type": "array",
+      "description": "List of material properties",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Unique material identifier"
+          },
+          "name": {
+            "type": "string",
+            "description": "Material name (e.g., 'Steel', 'Concrete')"
+          },
+          "E": {
+            "type": "number",
+            "description": "Young's modulus (MPa or GPa)"
+          },
+          "nu": {
+            "type": "number",
+            "description": "Poisson's ratio (typically 0.3 for steel, 0.2 for concrete)"
+          }
+        },
+        "required": ["id", "name", "E", "nu"],
+        "additionalProperties": true
+      }
+    },
+    "loads": {
+      "type": "array",
+      "description": "List of applied loads (point loads, distributed loads, etc.)",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Unique load identifier"
+          },
+          "type": {
+            "type": "string",
+            "enum": ["nodal", "linear"],
+            "description": "Load type: 'nodal' for point loads at nodes, 'linear' for distributed loads on members"
+          },
+          "targets": {
+            "type": "array",
+            "description": "Member IDs or node IDs where the load is applied",
+            "items": {
+              "type": "integer"
+            }
+          },
+          "name": {
+            "type": "string",
+            "description": "Load name or description"
+          },
+          "value": {
+            "type": "object",
+            "description": "Load vector (Fx, Fy, Fz) in kN",
+            "properties": {
+              "x": {
+                "type": "number",
+                "description": "Force in X direction (kN)"
+              },
+              "y": {
+                "type": "number",
+                "description": "Force in Y direction (kN)"
+              },
+              "z": {
+                "type": "number",
+                "description": "Force in Z direction (kN)"
+              }
+            },
+            "required": ["x", "y", "z"]
+          }
+        },
+        "required": ["id", "type", "targets", "value"]
+      }
+    },
+    "boundaryConditions": {
+      "type": "array",
+      "description": "List of boundary conditions (supports, restraints)",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Unique boundary condition identifier"
+          },
+          "type": {
+            "type": "string",
+            "enum": ["fixed", "pinned", "roller", "free"],
+            "description": "Type of support"
+          },
+          "targets": {
+            "type": "array",
+            "description": "Node IDs where the boundary condition is applied",
+            "items": {
+              "type": "integer"
+            }
+          },
+          "name": {
+            "type": "string",
+            "description": "Boundary condition name"
+          },
+          "dx": {
+            "type": "integer",
+            "enum": [0, 1],
+            "description": "Restrain translation in X direction (0=free, 1=fixed)"
+          },
+          "dy": {
+            "type": "integer",
+            "enum": [0, 1],
+            "description": "Restrain translation in Y direction (0=free, 1=fixed)"
+          },
+          "dz": {
+            "type": "integer",
+            "enum": [0, 1],
+            "description": "Restrain translation in Z direction (0=free, 1=fixed)"
+          },
+          "rx": {
+            "type": "integer",
+            "enum": [0, 1],
+            "description": "Restrain rotation around X axis (0=free, 1=fixed)"
+          },
+          "ry": {
+            "type": "integer",
+            "enum": [0, 1],
+            "description": "Restrain rotation around Y axis (0=free, 1=fixed)"
+          },
+          "rz": {
+            "type": "integer",
+            "enum": [0, 1],
+            "description": "Restrain rotation around Z axis (0=free, 1=fixed)"
+          }
+        },
+        "required": ["id", "type", "targets"]
+      }
+    }
+  },
+  "required": ["nodes", "members", "sections", "loads", "boundaryConditions"],
+  "additionalProperties": false,
+  "examples": [
+    {
+      "nodes": [
+        {"id": 1, "x": 0, "y": 0, "z": 0},
+        {"id": 2, "x": 5, "y": 0, "z": 0},
+        {"id": 3, "x": 5, "y": 3, "z": 0}
+      ],
+      "members": [
+        {
+          "id": 1,
+          "name": "Beam 1",
+          "nodei": {"id": 1, "x": 0, "y": 0, "z": 0},
+          "nodej": {"id": 2, "x": 2.5, "y": 0, "z": 0},
+          "section": 1
+        },
+        {
+          "id": 2,
+          "name": "Beam 2",
+          "nodei": {"id": 2, "x": 2.5, "y": 0, "z": 0},
+          "nodej": {"id": 3, "x": 5, "y": 0, "z": 0},
+          "section": 1
+        }
+      ],
+      "sections": [
+        {
+          "id": 1,
+          "name": "W12x26",
+          "type": "I",
+          "depth": 30,
+          "width": 20,
+          "tw": 0.8,
+          "tf": 1.2,
+          "material": {
+            "E": 210000,
+            "nu": 0.3
+          }
+        }
+      ],
+      "loads": [
+        {
+          "id": 1,
+          "type": "nodal",
+          "targets": [2],
+          "name": "Vertical Load",
+          "value": {"x": 0, "y": -50, "z": 0}
+        }
+      ],
+      "boundaryConditions": [
+        {
+          "id": 1,
+          "type": "fixed",
+          "targets": [1],
+          "name": "Fixed Support",
+          "dx": 1,
+          "dy": 1,
+          "dz": 1,
+          "rx": 1,
+          "ry": 1,
+          "rz": 1
+        },
+        {
+          "id": 2,
+          "type": "pinned",
+          "targets": [3],
+          "name": "Pinned Support",
+          "dx": 1,
+          "dy": 1,
+          "dz": 1,
+          "rx": 0,
+          "ry": 0,
+          "rz": 0
+        }
+      ]
+    }
+  ]
+}

@@ -143,10 +143,45 @@ def get_local_axis(nodei, nodej, vecxz=None):
     
     return [vecx, vecy, vecz]
 
+def calculate_vecxz(member):
+    """
+    Calculate vecxz (local z-axis vector) for a member if not provided.
+    Mirrors the _vecxz() logic from frontend ElasticBeamColumn.ts
+
+    For horizontal members: vecz = [0, 0, 1] (global Z-axis)
+    For vertical members: vecz = [1, 0, 0] (global X-axis)
+    """
+    if 'vecxz' in member and member['vecxz']:
+        return member['vecxz']
+
+    # Get node coordinates
+    nodei = np.array([member['nodei']['x'], member['nodei']['y'], member['nodei']['z']])
+    nodej = np.array([member['nodej']['x'], member['nodej']['y'], member['nodej']['z']])
+
+    # Calculate local x-axis (along member)
+    local_vecx = nodej - nodei
+    local_vecx = local_vecx / np.linalg.norm(local_vecx)
+
+    # Default up vector for horizontal members
+    up = np.array([0, 1, 0])
+
+    # Calculate cross product
+    cross_vec = np.cross(up, local_vecx)
+    cross_length = np.linalg.norm(cross_vec)
+
+    # Determine local z-axis based on member orientation
+    if cross_length < 1e-6:  # Vertical member
+        vecz = np.array([1, 0, 0])
+    else:  # Horizontal member
+        vecz = np.array([0, 0, 1])
+
+    return vecz.tolist()
+
 def create_geometric_transformation(members):
     """Creates a linear geometric transformation for beam-column elements."""
     for member in members:
-      ops.geomTransf("Linear", member['id'], *member['vecxz'])
+        vecxz = calculate_vecxz(member)
+        ops.geomTransf("Linear", member['id'], *vecxz)
 
 def create_sections(sections):
     """Creates a section for the beam-column elements."""

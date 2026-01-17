@@ -60,7 +60,7 @@ def run_analysis(model: dict):
     output['members'] = []
     nodes = model['nodes']
     members = model['members']
-    materials = model['materials']
+    # materials = model['materials']
     sections = model['sections']
     loads = model['loads']
     boundary_conditions = model['boundary_conditions']

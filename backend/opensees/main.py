@@ -151,8 +151,9 @@ def calculate_vecxz(member):
     For horizontal members: vecz = [0, 0, 1] (global Z-axis)
     For vertical members: vecz = [1, 0, 0] (global X-axis)
     """
-    if 'vecxz' in member and member['vecxz']:
-        return member['vecxz']
+    vecxz = member.get('vecxz', None)
+    if vecxz:
+        return vecxz
 
     # Get node coordinates
     nodei = np.array([member['nodei']['x'], member['nodei']['y'], member['nodei']['z']])
@@ -171,11 +172,13 @@ def calculate_vecxz(member):
 
     # Determine local z-axis based on member orientation
     if cross_length < 1e-6:  # Vertical member
-        vecz = np.array([1, 0, 0])
+        vecxz = np.array([1, 0, 0])
     else:  # Horizontal member
-        vecz = np.array([0, 0, 1])
-
-    return vecz.tolist()
+        vecxz = np.array([0, 0, 1])
+        
+    vec = vecxz.tolist()
+    member['vecxz'] = vec
+    return vec
 
 def create_geometric_transformation(members):
     """Creates a linear geometric transformation for beam-column elements."""

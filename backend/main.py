@@ -9,6 +9,7 @@ import httpx
 import pathlib
 import os
 import json
+import math
 from datetime import datetime, timezone
 from websockets.exceptions import ConnectionClosed
 
@@ -19,6 +20,7 @@ from models.user import User
 from mcp_tools import mcp_server
 import mcp_tools
 from opensees import run_analysis
+from opensees.helpers import compute_section_properties
 
 class ConnectionManager:
     def __init__(self):
@@ -224,6 +226,174 @@ async def get_analysis(model : dict):
   except Exception as e:
     print('ERROR: ', e)
     raise HTTPException(status_code=500, detail=str(e))
+
+def format_section_dimensions(section: dict) -> str:
+  """Format section dimensions based on section type"""
+  section_type = section.get("type", "")
+
+  if section_type == "Rectangular":
+    width = section.get("width")
+    height = section.get("height")
+    return f"{width}x{height}mm"
+  elif section_type == "ISection":
+    bf = section.get("bf")
+    tf = section.get("tf")
+    tw = section.get("tw")
+    h = section.get("h")
+    return f"I: bf={bf}mm, tf={tf}mm, tw={tw}mm, h={h}mm"
+  elif section_type == "HollowCircularSection":
+    D = section.get("D")
+    t = section.get("t")
+    return f"Hollow: D={D}mm, t={t}mm"
+  else:
+    return str(section)
+
+@app.post("/llm-analysis")
+async def get_llm_analysis(model : dict):
+  try :
+    output = run_analysis(model)
+
+    # Extract nodes and format as table
+    nodes = output.get("nodes", [])
+    nodes_table = []
+
+    for node in nodes:
+      displacements = node.get("displacements", {})
+      nodes_table.append({
+        "id": node.get("id"),
+        "x": node.get("x"),
+        "y": node.get("y"),
+        "z": node.get("z"),
+        "ux": displacements.get("ux"),
+        "uy": displacements.get("uy"),
+        "uz": displacements.get("uz"),
+        "rx": displacements.get("rx"),
+        "ry": displacements.get("ry"),
+        "rz": displacements.get("rz")
+      })
+
+    # Extract members and format as table
+    members = output.get("members", [])
+    members_table = []
+
+    for member in members:
+      node_efforts = member.get("node_efforts", [])
+
+      # Initialize min/max for each effort type
+      efforts_minmax = {
+        "N": {"min": None, "max": None},
+        "Vy": {"min": None, "max": None},
+        "T": {"min": None, "max": None},
+        "My": {"min": None, "max": None},
+        "Mz": {"min": None, "max": None}
+      }
+
+      # Get first and last node IDs from mesh
+      mesh = member.get("mesh", {})
+      mesh_members = mesh.get("members", [])
+      if mesh_members:
+        iNode = mesh_members[0].get("nodei")
+        jNode = mesh_members[-1].get("nodej")
+      else:
+        iNode = None
+        jNode = None
+
+      # Track min/max for each effort type
+      for effort_data in node_efforts:
+        efforts = effort_data.get("efforts", {})
+        for effort_type in efforts_minmax.keys():
+          if effort_type in efforts:
+            value = efforts[effort_type].get("value", 0)
+            if efforts_minmax[effort_type]["min"] is None:
+              efforts_minmax[effort_type]["min"] = value
+              efforts_minmax[effort_type]["max"] = value
+            else:
+              efforts_minmax[effort_type]["min"] = min(efforts_minmax[effort_type]["min"], value)
+              efforts_minmax[effort_type]["max"] = max(efforts_minmax[effort_type]["max"], value)
+
+      # Build member row
+      member_row = {
+        "iNode": iNode,
+        "jNode": jNode
+      }
+
+      # Add min/max values in order: N, Vy, T, My, Mz
+      for effort_type in ["N", "Vy", "T", "My", "Mz"]:
+        member_row[f"-{effort_type}"] = efforts_minmax[effort_type]["min"] if efforts_minmax[effort_type]["min"] is not None else 0
+        member_row[f"+{effort_type}"] = efforts_minmax[effort_type]["max"] if efforts_minmax[effort_type]["max"] is not None else 0
+
+      members_table.append(member_row)
+
+    # Extract sections and format as table
+    sections = model.get("sections", [])
+    sections_table = []
+
+    for section in sections:
+      material = section.get("material", {})
+      sections_table.append({
+        "name": section.get("name"),
+        "type": section.get("type"),
+        "dimensions": format_section_dimensions(section),
+        "E": material.get("E"),
+        "nu": material.get("nu")
+      })
+
+    # Extract loads and format as table
+    loads = model.get("loads", [])
+    loads_table = []
+
+    for load in loads:
+      value = load.get("value", {})
+      # Calculate magnitude of the load vector
+      x = value.get("x", 0)
+      y = value.get("y", 0)
+      z = value.get("z", 0)
+      load_magnitude = math.sqrt(x**2 + y**2 + z**2)
+
+      loads_table.append({
+        "name": load.get("name"),
+        "type": load.get("type"),
+        "targets": load.get("targets", []),
+        "value": load_magnitude
+      })
+
+    # Extract boundary conditions and format as table
+    boundary_conditions = model.get("boundary_conditions", [])
+    boundary_conditions_table = []
+
+    for bc in boundary_conditions:
+      boundary_conditions_table.append({
+        "name": bc.get("name"),
+        "dx": bc.get("dx"),
+        "dy": bc.get("dy"),
+        "dz": bc.get("dz"),
+        "rx": bc.get("rx"),
+        "ry": bc.get("ry"),
+        "rz": bc.get("rz"),
+        "targets": bc.get("targets", [])
+      })
+
+    print('SECTIONS', sections_table)
+    return {
+      "status": "Analysis completed successfully",
+      "nodes": nodes_table,
+      "members": members_table,
+      "sections": sections_table,
+      "loads": loads_table,
+      "boundary_conditions": boundary_conditions_table
+    }
+
+  except Exception as e:
+    print('ERROR: ', e)
+    raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/compute-section-properties")
+async def calculate_section_properties(data: dict):
+  try:
+    data["material"] = {"E": 210000, "nu": 0.3}
+    return compute_section_properties(data)
+  except Exception as e:
+    raise HTTPException(status_code=400, detail=str(e))
 
 @app.websocket("/ws/{client_id}")
 async def websocket_endpoint(websocket: WebSocket, client_id: int):

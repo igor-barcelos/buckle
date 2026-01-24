@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(tree:*)",
+      "Bash(python test_technical_chunker.py:*)",
+      "Bash(python debug_doc_structure.py:*)",
+      "Bash(python debug_sections.py:*)",
+      "Bash(python debug_simple.py:*)",
+      "Bash(python:*)",
+      "Bash(del debug_doc_structure.py debug_sections.py debug_simple.py output_chunks.json)",
+      "Bash(ls:*)",
+      "Bash(pip uninstall:*)",
+      "Bash(pip install:*)"
+    ]
+  }
+}
